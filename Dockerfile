@@ -2,7 +2,7 @@ FROM php:7.2-cli
 
 LABEL maintainer="open-source@6go.it" \
     vendor=6go.it \
-    version=1.0.0
+    version=1.0.1
 
 # Set up some basic global environment variables
 ARG NODE_ENV
@@ -22,7 +22,7 @@ RUN echo "deb http://ftp.uk.debian.org/debian jessie-backports main" > /etc/apt/
     # Since node will update the package we won't need to do that later
     && curl -sL https://deb.nodesource.com/setup_10.x | bash -
 
-# Install necessari libs and commands
+# Install common libraries and commands
 RUN apt-get install -y -qq apt-utils apt-transport-https \
     build-essential git sshpass iputils-ping nodejs yarn \
     libcurl4-gnutls-dev libicu-dev libmcrypt-dev \
@@ -50,7 +50,7 @@ RUN yes | pecl install -s xdebug-2.6.1 \
 RUN docker-php-source extract \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include \
-    && docker-php-ext-install -j$(nproc) iconv bcmath bz2 exif gmp gd intl mysqli opcache pdo_mysql pdo_pgsql pgsql zip \
+    && docker-php-ext-install -j$(nproc) bcmath bz2 exif gmp gd iconv intl mysqli opcache pcntl pdo_mysql pdo_pgsql pgsql zip \
     && docker-php-ext-enable xdebug opcache gd mcrypt \
     && docker-php-source delete \
     # Sanity check
@@ -69,11 +69,8 @@ RUN npm install -g svgo
 
 # Clean up all the mess done by installing stuff
 RUN apt-get remove --purge -y software-properties-common \
-    && apt-get autoremove -y \
-    autoconf automake \
-    build-essential \
-    cmake mercurial \
-    texinfo \
+    && apt-get autoremove -y autoconf automake build-essential \
+    cmake mercurial texinfo \
     && apt-get clean \
     && apt-get autoclean \
     && echo -n > /var/lib/apt/extended_states \
