@@ -1,13 +1,15 @@
+# Consider switching to :alpine in the future
 FROM php:7.2-cli
 
 LABEL maintainer="open-source@6go.it" \
     vendor=6go.it \
-    version=1.0.1
+    version=1.0.2
 
 # Set up some basic global environment variables
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 ENV DEBIAN_FRONTEND noninteractive
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Let's start by adding few repository
 # necessary for any general PHP application tested with Gitlab
@@ -46,12 +48,17 @@ RUN yes | pecl install -s xdebug-2.6.1 \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
+
+# Install other PECL/PEAR extensions
+RUN yes | pecl install -s imagick
+RUN pear install PHP_CodeSniffer
+
 # Install PHP Extensions
 RUN docker-php-source extract \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include \
     && docker-php-ext-install -j$(nproc) bcmath bz2 exif gmp gd iconv intl mysqli opcache pcntl pdo_mysql pdo_pgsql pgsql zip \
-    && docker-php-ext-enable xdebug opcache gd mcrypt \
+    && docker-php-ext-enable xdebug opcache gd mcrypt imagick \
     && docker-php-source delete \
     # Sanity check
     && php -v \
