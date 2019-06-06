@@ -1,5 +1,5 @@
 # Consider switching to :alpine in the future
-FROM php:7.3-cli
+FROM php:7.3-cli-stretch
 
 LABEL maintainer="open-source@6go.it" \
     vendor=6go.it \
@@ -18,16 +18,15 @@ RUN apt-get update -y -qq \
     && apt-get install -y -qq apt-utils apt-transport-https gnupg
 
 # Add repository to /etc/apt/source.list
-RUN echo "deb http://ftp.uk.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/backports.list \
+RUN echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/backports.list \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     # Since node will update the package we won't need to do that later
-    && curl -sL https://deb.nodesource.com/setup_10.x | bash -
+    && curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
 # Install common libraries and commands
-RUN apt-get install -y -qq apt-utils apt-transport-https \
-    build-essential git sshpass iputils-ping nodejs yarn \
-    libcurl4-gnutls-dev libicu-dev libmcrypt-dev \
+RUN apt-get install -y -qq build-essential git sshpass iputils-ping \
+    nodejs yarn libcurl4-gnutls-dev libicu-dev libmcrypt-dev \
     libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev \
     libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev \
     libldap2-dev unixodbc-dev libpq-dev libsqlite3-dev libaspell-dev \
