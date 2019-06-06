@@ -3,7 +3,7 @@ FROM php:7.3-cli-stretch
 
 LABEL maintainer="open-source@6go.it" \
     vendor=6go.it \
-    version=1.0.4
+    version=1.0.5
 
 # Set up some basic global environment variables
 ARG NODE_ENV
