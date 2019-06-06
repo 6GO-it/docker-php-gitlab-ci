@@ -26,12 +26,12 @@ RUN echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/so
 
 # Install common libraries and commands
 RUN apt-get install -y -qq build-essential git sshpass iputils-ping \
-    nodejs yarn libcurl4-gnutls-dev libicu-dev libmcrypt-dev \
+    libzip-dev zlib1g-dev libcurl4-gnutls-dev libicu-dev libmcrypt-dev \
     libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev \
     libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev \
     libldap2-dev unixodbc-dev libpq-dev libsqlite3-dev libaspell-dev \
     libsnmp-dev libpcre3-dev libtidy-dev \
-    jpegoptim optipng pngquant gifsicle ffmpeg
+    jpegoptim optipng pngquant gifsicle ffmpeg nodejs yarn
 
 # Compile PHP, include these extensions.
 # Symbolic link necessary for php extensions
