@@ -1,9 +1,9 @@
 # Consider switching to :alpine in the future
-FROM php:7.2-cli
+FROM php:7.3-cli
 
 LABEL maintainer="open-source@6go.it" \
     vendor=6go.it \
-    version=1.0.3
+    version=1.0.4
 
 # Set up some basic global environment variables
 ARG NODE_ENV
@@ -40,11 +40,10 @@ RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/
 
 # Since PHP 7.2 mcrypt is not enabled by default so we need to include it manually
 # Please see https://stackoverflow.com/a/47673183/1202367
-RUN yes | pecl install -s mcrypt-1.0.1
-
-# Configure xDebug
-RUN yes | pecl install -s xdebug-2.6.1 \
+# Install also xDebug latest stable and MongoDB
+RUN yes | pecl install -s mcrypt-1.0.1 xdebug-2.7.2 mongodb \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
