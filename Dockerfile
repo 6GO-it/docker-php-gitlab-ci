@@ -40,7 +40,7 @@ RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/
 # Since PHP 7.2 mcrypt is not enabled by default so we need to include it manually
 # Please see https://stackoverflow.com/a/47673183/1202367
 # Install also xDebug latest stable and MongoDB
-RUN yes | pecl install -s mcrypt-1.0.1 xdebug-2.7.2 mongodb \
+RUN yes | pecl install -s mcrypt-1.0.2 xdebug-2.7.2 mongodb \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
