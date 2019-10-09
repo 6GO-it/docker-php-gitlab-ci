@@ -32,5 +32,5 @@ You will find:
 - Debian 8 as base OS
 - Latest Nodejs and NPM
 - Yarn as an alternative for NPM
-- PHP 7.2 with necessary extensions and xDebug installed
+- PHP 7.3+ with necessary extensions and xDebug installed
 - Composer available globally
